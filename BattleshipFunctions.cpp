@@ -735,12 +735,14 @@ if(type==1){
 	cout << "INVALID POSITION!" << endl << "Please choose a position to fire at (in the form A1): ";
 	cin >> x >> y;
 	}
+
         cout << "\033[2J\033[1;1H";
 	cout<<"*******************************************************************"<<endl;
 	cout<<"                            BATTLESHIP                             "<<endl;
 	cout<<"*******************************************************************"<<endl;
   	cout<< endl <<endl;
 	cout << "You fired at " << x << y << "... ";
+
 }
 else{
 	do{
@@ -780,4 +782,3 @@ return false;
 else
 return true;
 }
-
