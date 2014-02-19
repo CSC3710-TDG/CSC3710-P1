@@ -72,7 +72,6 @@ inputFile >> arrayScores[x] >> arrayNames[x];
 	do {
 		if (inputFile.eof())
 		{
-//			x--;
 			endFile = true;
 		}
 		else
