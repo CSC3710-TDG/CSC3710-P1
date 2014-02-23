@@ -54,5 +54,5 @@ void quitGame()
          cout<<"*******************************************************************"<<endl;
          cout<< endl <<endl;
          cout<<"Thanks for playing Battleship!"<<endl;
-         exit();
+         int exit();
 }
