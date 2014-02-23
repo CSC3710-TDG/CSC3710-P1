@@ -76,9 +76,9 @@ inputFile >> arrayScores[x] >> arrayNames[x];
 	inputFile.close();
 
 	//press "R" to return to game play
-	char discardchar;
+	string discardstr;
 	cout << endl << "Press any key to return to the main menu: " ;
-	cin >> discardchar;
+	cin >> discardstr;
 }
 
 void BubbleSort(int list1[], string list2[], int size)
@@ -113,9 +113,9 @@ void PrintHelpGuide ()
 	cout << "HELP GUIDE" << endl;
 
 	//press "R" to return to game play
-        char discardchar;
+        string discardstr;
         cout << endl << "Press any key to return to the main menu: " ;
-        cin >> discardchar;
+        cin >> discardstr;
 }
 
 

@@ -198,10 +198,8 @@ void LoadGame()
           load>>cpugrid[i][j];
       }
    }
-   cout<<name<<endl;
-   printGrid(usergrid);
-   printGrid(cpugrid);
 
-   //playGame(name,usergrid,cpugrid);
+
+   playGame(name,usergrid,cpugrid);
    
 }

@@ -98,10 +98,29 @@ player user, cpu;
 ship userCar, cpuCar, userBat, cpuBat, userDes, cpuDes, userSub, cpuSub, userPat, cpuPat;	
 char selected;
 char selected2;
-char discardchar;
+string discardstr;
 char userview[10][10];
 createGrid(userview);
+
+for(int i=0;i<10;i++){
+   for(int j=0;j<10;j++){
+      if(cpugrid[i][j]=='M'){
+	 userview[i][j]='M';
+      }
+      else if(cpugrid[i][j]=='X'){
+         userview[i][j]='X';
+      }
+   }
+}
+
+ cout << "\033[2J\033[1;1H";
+	cout<<"*******************************************************************"<<endl;
+	cout<<"                            BATTLESHIP                             "<<endl;
+	cout<<"*******************************************************************"<<endl;
+  	cout<< endl <<endl;
 printGrid(userview);
+cout << "-------------------------------------------------------------------" << endl;
+printGrid(usergrid);
 
 //cout << "I got here!" << endl;
 
@@ -214,7 +233,7 @@ highscores << user.checkScore() << " " << name << endl;
 highscores.close();
 
 cout << "Press any key to continue!" << endl;
-cin >> discardchar;
+cin >> discardstr;
 return 1;
 }
 
@@ -293,7 +312,7 @@ printGrid(usergrid);
 if(user.checkHealth()==0){
 cout << "Oh no! You have lost the game!" << endl;
 cout << "Press any key to continue!" << endl;
-cin >> discardchar;
+cin >> discardstr;
 return 0;
 }
 
@@ -388,7 +407,18 @@ if(type==1){
 
 //if statement here for help guide
 	if(x=='?'){
-		PrintHelpGuide();
+
+	PrintHelpGuide();
+	cout << "\033[2J\033[1;1H";
+	cout<<"*******************************************************************"<<endl;
+	cout<<"                            BATTLESHIP                             "<<endl;
+	cout<<"*******************************************************************"<<endl;
+  	cout<< endl <<endl;
+	printGrid(view);
+	cout << "-------------------------------------------------------------------" << endl;
+	printGrid(usergrid);
+	cout << "Please choose a position to fire at (in the form A1): ";
+	cin >> x >> y;
 	}
 	else if(toupper(x)=='S'){
 		saveGame(name, usergrid, cpugrid);
@@ -409,9 +439,11 @@ if(type==1){
 			quitGame();
 		}
 	}
+	x=toupper(x);
 	while(verifyShot(name, usergrid, cpugrid, view, x, y)==false){
 	cout << "INVALID POSITION!" << endl << "Please choose a position to fire at (in the form A1): ";
 	cin >> x >> y;
+	x=toupper(x);
 	}
 
    cout << "\033[2J\033[1;1H";
@@ -432,7 +464,7 @@ else{
 	cout << "The computer fired at " << x << y << "... ";
 	incrementShots();
 }
-
+x=toupper(x);
 selected = grid[y-1][x-65]; //As opposed to above commented out logic, because now takeTurn is passed the corresponding grid
 
 //cout << "I found the position!" << selected << endl;
@@ -442,12 +474,13 @@ selected=='.'?grid[y-1][x-65]=77:grid[y-1][x-65]=88;
 }
 else{
 selected=='.'?view[y-1][x-65]=77:view[y-1][x-65]=88;
+selected=='.'?cpugrid[y-1][x-65]=77:cpugrid[y-1][x-65]=88;
 }
 return selected;	
 }
 
 bool player::verifyShot(string name, char usergrid[10][10], char cpugrid[10][10], char grid[10][10], char x, int y){
-x=toupper(x);
+
 
 if(!(x>=65 && x<=74)){
 return false;
@@ -484,5 +517,5 @@ void saveGame(string name, char usergrid[10][10], char cpugrid[10][10]){
       saved<<endl;
    }
 	saved.close();
-	int exit();
+	quitGame();
 }
