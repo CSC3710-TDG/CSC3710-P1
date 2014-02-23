@@ -12,11 +12,6 @@
 
 using namespace std;
 
-
-
-
-
-
 //Function Declarations
 void Welcome();
 void NewGame();
@@ -27,11 +22,17 @@ void PrintHighScores();
 void RandomPlacement(char [10][10]);
 bool verifyPlacement(int, char, int, char, int, char [10][10]); //length and coordinates and grid
 void BubbleSort(int list1[], string list2[], int size);
-
-int playGame(char [10][10], char [10][10]);
+int playGame(string name, char [10][10], char [10][10]);
 //primary module 2 handler to define gameplay
 //expects two grids, the usergrid and cpugrid
 //returns nothing
+//Struct Declaration:
+struct Placement{
+  int lengtharray [5] = {5,4,3,3,2};
+  char shiparray [5] ={'C', 'B', 'D', 'S', 'P'};
+  string shipnamearray [5] = {"Aircraft Carrier", "Battleship", "Destroyer", "Submarine", "Patrol Boat"}; 
+  int directionnumberarray [5] = {6,7,8,8,9};
+};
 
 //Welcome function when you first enter the game.
 void Welcome()
@@ -81,7 +82,8 @@ do{
 
 //New Game function
 void NewGame ()
-{
+{  
+   string name;
    char usergrid[10][10];
    char cpugrid[10][10];
    bool istrue;
@@ -89,95 +91,42 @@ void NewGame ()
    int y1,y2;
    createGrid(usergrid);
    createGrid(cpugrid);
+   cout<<"Please enter your first name: ";
+   cin>>name;
    printGrid(usergrid);
-   cout<<"Now please select the coordinates for your ships: "<<endl;
-//This first loop is for Aircraft Carrier (5 units)
+   cout<<name<<", now please select the coordinates for your ships: "<<endl;
+ 
+   Placement item;
+   for(int z=0;z<5;z++){
    do{
-      cout<<"Enter the start and ending coordinates for your Aircraft Carrier(5 units long)."<<endl;
+      cout<<"Enter the start and ending coordinates for your ";
+      cout<< item.shipnamearray[z];
+      cout<<" ("<<item.lengtharray[z]<< " units long)."<<endl;
       cout<<"Please enter in the format A1 A5 or A1 E1: ";
       cin>>x1>>y1>>x2>>y2;
-      istrue=verifyPlacement(5, x1, y1, x2, y2, usergrid);
+      x1=toupper(x1);
+      x2=toupper(x2);
+      istrue=verifyPlacement(item.lengtharray[z], x1, y1, x2, y2, usergrid);
       if(istrue==false)
          cout<<"INVALID SHIP PLACEMENT, Please try again."<<endl;
      }while(istrue==false);
      if(x1==x2){
        for(int i=y1;i<=y2; i++)
-          usergrid[i-1][x1-65]='C';
+          usergrid[i-1][x1-65]=item.shiparray[z];
      }else{
          for(int i=x1;i<=x2; i++)
-            usergrid[y1-1][i-65]='C';
+            usergrid[y1-1][i-65]=item.shiparray[z];
       }
       printGrid(usergrid);  
-//This is for the Battleship (4 units)
-   do{
-      cout<<"Enter the start and ending coordinates for your Battleship(4 units long)."<<endl;
-      cout<<"Please enter in the format A1 A5 or A1 E1: ";
-      cin>>x1>>y1>>x2>>y2;
-      istrue=verifyPlacement(4, x1, y1, x2, y2, usergrid);
-      if(istrue==false)
-         cout<<"INVALID SHIP PLACEMENT, Please try again."<<endl;
-     }while(istrue==false); 
-     if(x1==x2){
-       for(int i=y1;i<=y2; i++)
-          usergrid[i-1][x1-65]='B';
-     }else{
-         for(int i=x1;i<=x2; i++)
-            usergrid[y1-1][i-65]='B';
       }
-      printGrid(usergrid);  
-//This is for the Destroyer (3 units)
-   do{
-      cout<<"Enter the start and ending coordinates for your Destroyer(3 units long)."<<endl;
-      cout<<"Please enter in the format A1 A5 or A1 E1: ";
-      cin>>x1>>y1>>x2>>y2;
-      istrue=verifyPlacement(3, x1, y1, x2, y2, usergrid);
-      if(istrue==false)
-         cout<<"INVALID SHIP PLACEMENT, Please try again."<<endl;
-     }while(istrue==false); 
-     if(x1==x2){
-       for(int i=y1;i<=y2; i++)
-          usergrid[i-1][x1-65]='D';
-     }else{
-         for(int i=x1;i<=x2; i++)
-            usergrid[y1-1][i-65]='D';
-      }
-      printGrid(usergrid);  
-//This is for the Submarine (3 unitS)
-   do{
-      cout<<"Enter the start and ending coordinates for your Submarine(3 units long)."<<endl;
-      cout<<"Please enter in the format A1 A5 or A1 E1: ";
-      cin>>x1>>y1>>x2>>y2;
-      istrue=verifyPlacement(3, x1, y1, x2, y2, usergrid);
-      if(istrue==false)
-         cout<<"INVALID SHIP PLACEMENT, Please try again."<<endl;
-     }while(istrue==false); 
-     if(x1==x2){
-       for(int i=y1;i<=y2; i++)
-          usergrid[i-1][x1-65]='S';
-     }else{
-         for(int i=x1;i<=x2; i++)
-            usergrid[y1-1][i-65]='S';
-      }
-      printGrid(usergrid);  
-//This is for the Patrol Boat (2 units)
-   do{
-      cout<<"Enter the start and ending coordinates for your Patrol Boat(2 units long)."<<endl;
-      cout<<"Please enter in the format A1 A5 or A1 E1: ";
-      cin>>x1>>y1>>x2>>y2;
-      istrue=verifyPlacement(2, x1, y1, x2, y2, usergrid);
-      if(istrue==false)
-         cout<<"INVALID SHIP PLACEMENT, Please try again."<<endl;
-     }while(istrue==false); 
-     if(x1==x2){
-       for(int i=y1;i<=y2; i++)
-          usergrid[i-1][x1-65]='P';
-     }else{
-         for(int i=x1;i<=x2; i++)
-            usergrid[y1-1][i-65]='P';
-      }
-      printGrid(usergrid);  
+
+
+
+
+
+
       RandomPlacement(cpugrid);
-      playGame(usergrid, cpugrid);
+      playGame(name, usergrid, cpugrid);
 
 
 }
@@ -215,117 +164,30 @@ void RandomPlacement(char cpugrid[10][10])
    char x1, x2;
    int y1,y2;
    int direction;
+   Placement item;
    //direction = rand() % 2 + 5;//choose a direction either vertical or horizontal
-   do{
+  for(int z=0;z<5;z++){
+  do{
       //srand (time(0));
-      x1=rand() %6 + 65;
-      y1=rand() %6;
+      x1=rand() %item.directionnumberarray[z] + 65;
+      y1=rand() %item.directionnumberarray[z];
       direction = rand() % 2 + 5;
       if(direction==5){
-         y2=y1+4;
+         y2=y1+(item.lengtharray[z]-1);
          x2=x1;
       }else if(direction==6){
-         x2=x1+4;
+         x2=x1+(item.lengtharray[z]-1);
          y2=y1;
       }
-      istrue=verifyPlacement(5, x1, y1, x2, y2, cpugrid);
+      istrue=verifyPlacement(item.lengtharray[z], x1, y1, x2, y2, cpugrid);
      }while(istrue==false); 
      if(x1==x2){
        for(int i=y1;i<=y2; i++)
-          cpugrid[i-1][x1-65]='C';
+          cpugrid[i-1][x1-65]=item.shiparray[z];
      }else{
          for(int i=x1;i<=x2; i++)
-            cpugrid[y1-1][i-65]='C';
+            cpugrid[y1-1][i-65]=item.shiparray[z];
       }
-   do{
-      //srand (time(0));
-      x1=rand() %7 + 65;
-      y1=rand() %7;
-      direction = rand() % 2 + 5;
-      //direction==5?direction++:direction--;
-      if(direction==5){
-         y2=y1+3;
-         x2=x1;
-      }else if(direction==6){
-         x2=x1+3;
-         y2=y1;
-      }
-      istrue=verifyPlacement(4, x1, y1, x2, y2, cpugrid);
-     }while(istrue==false); 
-     if(x1==x2){
-       for(int i=y1;i<=y2; i++)
-          cpugrid[i-1][x1-65]='B';
-     }else{
-         for(int i=x1;i<=x2; i++)
-            cpugrid[y1-1][i-65]='B';
-      }
-   do{
-      //srand (time(0));
-      x1=rand() %8 + 65;
-      y1=rand() %8;
-      direction = rand() % 2 + 5;
-      //direction==5?direction++:direction--;
-      if(direction==5){
-         y2=y1+2;
-         x2=x1;
-      }else if(direction==6){
-         x2=x1+2;
-         y2=y1;
-      }
-      istrue=verifyPlacement(3, x1, y1, x2, y2, cpugrid);
-     }while(istrue==false); 
-     if(x1==x2){
-       for(int i=y1;i<=y2; i++)
-          cpugrid[i-1][x1-65]='D';
-     }else{
-         for(int i=x1;i<=x2; i++)
-            cpugrid[y1-1][i-65]='D';
-      }
-   do{
-      //srand (time(0));
-      x1=rand() %8 + 65;
-      y1=rand() %8;
-      direction = rand() % 2 + 5;
-      //direction==5?direction++:direction--;
-      if(direction==5){
-         y2=y1+2;
-         x2=x1;
-      }else if(direction==6){
-         x2=x1+2;
-         y2=y1;
-      }
-      istrue=verifyPlacement(3, x1, y1, x2, y2, cpugrid);
-     }while(istrue==false); 
-     if(x1==x2){
-       for(int i=y1;i<=y2; i++)
-          cpugrid[i-1][x1-65]='S';
-     }else{
-         for(int i=x1;i<=x2; i++)
-            cpugrid[y1-1][i-65]='S';
-      }
-   do{
-      //srand (time(0));
-      x1=rand() %9 + 65;
-      y1=rand() %9;
-      direction = rand() % 2 + 5;
-      //direction==5?direction++:direction--;
-      if(direction==5){
-         y2=y1+1;
-         x2=x1;
-      }else if(direction==6){
-         x2=x1+1;
-         y2=y1;
-      }
-      istrue=verifyPlacement(2, x1, y1, x2, y2, cpugrid);
-     }while(istrue==false); 
-     if(x1==x2){
-       for(int i=y1;i<=y2; i++)
-          cpugrid[i-1][x1-65]='P';
-     }else{
-         for(int i=x1;i<=x2; i++)
-            cpugrid[y1-1][i-65]='P';
-      }
-
-
+   }
 }
 
