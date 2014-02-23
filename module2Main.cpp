@@ -9,9 +9,7 @@ Module 2 - Gameplay Module
 //in this way, we can calculate the hit percentage at the end of the game
 //for the purposes of calculating the player's score, we will use the following procedure:
 //-each time you get a hit, you get  10 points
-//-each time you get hit, you lose 10 points
 //-each time you sink a ship, you get points equal to the ship bonus (10x the length of the ship)
-//-each time one of your ships is sunk, you lose points equal to the ship bonus
 //-at the end of the game, your score is multiplied by 100% plus your hit percentage (eg. *175% for a hit percentage of 75%)
 #include<iostream>
 #include<ctime>
@@ -24,6 +22,7 @@ Module 2 - Gameplay Module
 #include <iomanip>
 #include <fstream>
 #include <cstdlib>
+#include <cstring>
 
 
 using namespace std;
@@ -59,10 +58,20 @@ int checkHealth();
 void decrementHealth();
 char takeTurn(char [10][10], char [10][10]);
 bool verifyShot(char [10][10], char, int);
+void addScore(int);
+int checkScore();
+void incrementShots();
+void incrementHits();
+void calcPercent();
+void genScore();
 
 private:
 int type;//what kind of user? 0 for cpu. 1 for human.
 int health;
+int score;
+int shots;
+int hits;
+double hitPercent;
 
 };
 
@@ -76,7 +85,7 @@ void shipInit(ship, ship, ship, ship, ship, ship, ship, ship, ship, ship);
 //returns nothing
 */
 
-int playGame(char usergrid[10][10], char cpugrid[10][10]){
+int playGame(string name, char usergrid[10][10], char cpugrid[10][10]){
 
 player user, cpu;
 ship userCar, cpuCar, userBat, cpuBat, userDes, cpuDes, userSub, cpuSub, userPat, cpuPat;	
@@ -106,6 +115,8 @@ userPat.setHealth(2);
 cpuPat.setHealth(2);
 user.setHealth();
 cpu.setHealth();
+user.addScore(100);
+cpu.addScore(100);
 
 //cout << "I got here3!" << endl;
 
@@ -123,47 +134,62 @@ cout << "MISS!" << endl;
 break;
 case 'C':
 cout << "HIT!" << endl;
+user.incrementHits();
 cpuCar.hit();
 cpu.decrementHealth();
+user.addScore(10);
 if(cpuCar.checkHealth()==0){
 cout << "You have sunk the opponent's Aircraft Carrier!" << endl;
 cpuCar.setSunk(true);
+user.addScore(50);
 }
 break;
 case 'B':
 cout << "HIT!" << endl;
+user.incrementHits();
 cpuBat.hit();
 cpu.decrementHealth();
+user.addScore(10);
 if(cpuBat.checkHealth()==0){
 cout << "You have sunk the opponent's Battleship!" << endl;
 cpuBat.setSunk(true);
+user.addScore(40);
 }
 break;
 case 'D':
 cout << "HIT!" << endl;
+user.incrementHits();
 cpuDes.hit();
 cpu.decrementHealth();
+user.addScore(10);
 if(cpuDes.checkHealth()==0){
 cout << "You have sunk the opponent's Destroyer!" << endl;
 cpuDes.setSunk(true);
+user.addScore(30);
 }
 break;
 case 'S':
 cout << "HIT!" << endl;
+user.incrementHits();
 cpuSub.hit();
 cpu.decrementHealth();
+user.addScore(10);
 if(cpuSub.checkHealth()==0){
 cout << "You have sunk the opponent's Submarine!" << endl;
 cpuSub.setSunk(true);
+user.addScore(30);
 }
 break;
 case 'P':
 cout << "HIT!" << endl;
+user.incrementHits();
 cpuPat.hit();
 cpu.decrementHealth();
+user.addScore(10);
 if(cpuPat.checkHealth()==0){
 cout << "You have sunk the opponent's Patrol Boat!" << endl;
 cpuPat.setSunk(true);
+user.addScore(20);
 }
 break;
 default:
@@ -173,6 +199,13 @@ break;
 printGrid(userview);
 if(cpu.checkHealth()==0){
 cout << "Congratulations! You have won the game!" << endl;
+
+user.genScore();
+ofstream highscores;
+highscores.open("highscores.txt", ios::app);
+highscores << user.checkScore() << " " << name << endl;
+highscores.close();
+
 cout << "Press any key to continue!" << endl;
 cin >> discardchar;
 return 1;
@@ -187,47 +220,62 @@ cout << "MISS!" << endl;
 break;
 case 'C':
 cout << "HIT!" << endl;
+cpu.incrementHits();
 userCar.hit();
 user.decrementHealth();
+cpu.addScore(10);
 if(userCar.checkHealth()==0){
 cout << "Your opponent has sunk your Aircraft Carrier!" << endl;
 userCar.setSunk(true);
+cpu.addScore(50);
 }
 break;
 case 'B':
 cout << "HIT!" << endl;
+cpu.incrementHits();
 userBat.hit();
 user.decrementHealth();
+cpu.addScore(10);
 if(userBat.checkHealth()==0){
 cout << "Your opponent has sunk your Battleship!" << endl;
 userBat.setSunk(true);
+cpu.addScore(40);
 }
 break;
 case 'D':
 cout << "HIT!" << endl;
+cpu.incrementHits();
 userDes.hit();
 user.decrementHealth();
+cpu.addScore(10);
 if(userDes.checkHealth()==0){
 cout << "Your opponent has sunk your Destroyer!" << endl;
 userDes.setSunk(true);
+cpu.addScore(30);
 }
 break;
 case 'S':
 cout << "HIT!" << endl;
+cpu.incrementHits();
 userSub.hit();
 user.decrementHealth();
+cpu.addScore(10);
 if(userSub.checkHealth()==0){
 cout << "Your opponent has sunk your Submarine!" << endl;
 userSub.setSunk(true);
+cpu.addScore(30);
 }
 break;
 case 'P':
 cout << "HIT!" << endl;
+cpu.incrementHits();
 userPat.hit();
 user.decrementHealth();
+cpu.addScore(10);
 if(userPat.checkHealth()==0){
 cout << "Your opponent has sunk your Patrol Boat!" << endl;
 userPat.setSunk(true);
+cpu.addScore(20);
 }
 break;
 default:
@@ -290,6 +338,31 @@ void player::decrementHealth(){
 health--;
 }
 
+void player::addScore(int input){
+score+=input;
+}
+
+int player::checkScore(){
+return score;
+}
+
+void player::incrementShots(){
+shots++;
+}
+
+void player::incrementHits(){
+hits++;
+calcPercent();
+}
+
+void player::calcPercent(){
+hitPercent=hits/shots;
+}
+
+void player::genScore(){
+score=score*(1+hitPercent);
+}
+
 char player::takeTurn(char grid[10][10], char view[10][10]){
 char x;
 int y;
@@ -319,6 +392,7 @@ if(type==1){
 	cout<<"*******************************************************************"<<endl;
   	cout<< endl <<endl;
 	cout << "You fired at " << x << y << "... ";
+	incrementShots();
 
 }
 else{
@@ -328,6 +402,7 @@ else{
 	}while(verifyShot(grid, x, y)==false);
 	cout << "-------------------------------------------------------------------" << endl;
 	cout << "The computer fired at " << x << y << "... ";
+	incrementShots();
 }
 
 selected = grid[y-1][x-65]; //As opposed to above commented out logic, because now takeTurn is passed the corresponding grid
@@ -344,7 +419,30 @@ return selected;
 }
 
 bool player::verifyShot(char grid[10][10], char x, int y){
-if(!(x>=65 && x<=74)){
+x=toupper(x);
+if(x=='?'){
+PrintHelpGuide();
+}
+else if(x=='S'){
+saveGame();
+}
+else if(x=='Q'){
+	char response;
+	cout << "Would you like to save the game first (Y/N)? ";
+	cin >> response;
+	while(response != 'Y' && response != 'N'){
+		cout << "Please enter Y or N!" << endl;
+		cout << "Would you like to save the game first (Y/N)? ";
+		cin >> response;
+	}
+	if(response=='Y'){
+		saveGame();
+	}
+	else{
+		quitGame();
+	}
+}
+else if(!(x>=65 && x<=74)){
 return false;
 }
 else if(!(y>=1 && y<=10)){
@@ -359,3 +457,4 @@ return false;
 else
 return true;
 }
+
