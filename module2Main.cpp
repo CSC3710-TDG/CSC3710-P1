@@ -27,6 +27,9 @@ Module 2 - Gameplay Module
 
 using namespace std;
 
+
+void saveGame(string, char[10][10], char[10][10]);
+
 //Class Declarations
 //class containing all ship member functions and properties for the operation of ship objects
 class ship{
@@ -56,14 +59,15 @@ int checkType();
 void setHealth();
 int checkHealth();
 void decrementHealth();
-char takeTurn(char [10][10], char [10][10]);
-bool verifyShot(char [10][10], char, int);
+char takeTurn(string, char [10][10], char [10][10], char [10][10], char [10][10]);
+bool verifyShot(string, char [10][10], char [10][10], char [10][10], char, int);
 void addScore(int);
 int checkScore();
 void incrementShots();
 void incrementHits();
 void calcPercent();
 void genScore();
+void setName();
 
 private:
 int type;//what kind of user? 0 for cpu. 1 for human.
@@ -72,6 +76,7 @@ int score;
 int shots;
 int hits;
 double hitPercent;
+string name;
 
 };
 
@@ -124,7 +129,7 @@ while(user.checkHealth() > 0 && cpu.checkHealth() > 0){
 
 //cout << "I got in the loop!" << endl;
 
-selected = user.takeTurn(cpugrid, userview);
+selected = user.takeTurn(name, usergrid, cpugrid, cpugrid, userview);
 
 //cout << "User took a turn!" << endl;
 
@@ -213,7 +218,7 @@ return 1;
 
 //cout << "Finished user's turn!" << endl;
 
-selected2 = cpu.takeTurn(usergrid, userview);
+selected2 = cpu.takeTurn(name, usergrid, cpugrid, usergrid, userview);
 switch(selected2){
 case '.':
 cout << "MISS!" << endl;
@@ -363,7 +368,7 @@ void player::genScore(){
 score=score*(1+hitPercent);
 }
 
-char player::takeTurn(char grid[10][10], char view[10][10]){
+char player::takeTurn(string name, char usergrid[10][10], char cpugrid[10][10], char grid[10][10], char view[10][10]){
 char x;
 int y;
 char selected;
@@ -381,7 +386,7 @@ if(type==1){
 
 //if statement here for help guide
 
-	while(verifyShot(view, x, y)==false){
+	while(verifyShot(name, usergrid, cpugrid, view, x, y)==false){
 	cout << "INVALID POSITION!" << endl << "Please choose a position to fire at (in the form A1): ";
 	cin >> x >> y;
 	}
@@ -399,7 +404,7 @@ else{
 	do{
 	x=rand() %10 + 65;
         y=rand() %10;
-	}while(verifyShot(grid, x, y)==false);
+	}while(verifyShot(name, usergrid, cpugrid, grid, x, y)==false);
 	cout << "-------------------------------------------------------------------" << endl;
 	cout << "The computer fired at " << x << y << "... ";
 	incrementShots();
@@ -418,13 +423,13 @@ selected=='.'?view[y-1][x-65]=77:view[y-1][x-65]=88;
 return selected;	
 }
 
-bool player::verifyShot(char grid[10][10], char x, int y){
+bool player::verifyShot(string name, char usergrid[10][10], char cpugrid[10][10], char grid[10][10], char x, int y){
 x=toupper(x);
 if(x=='?'){
 PrintHelpGuide();
 }
 else if(x=='S'){
-saveGame();
+saveGame(name, usergrid, cpugrid);
 }
 else if(x=='Q'){
 	char response;
@@ -436,7 +441,7 @@ else if(x=='Q'){
 		cin >> response;
 	}
 	if(response=='Y'){
-		saveGame();
+		saveGame(name, usergrid, cpugrid);
 	}
 	else{
 		quitGame();
@@ -458,3 +463,23 @@ else
 return true;
 }
 
+void saveGame(string name, char usergrid[10][10], char cpugrid[10][10]){
+	ofstream saved;
+	saved.open("saved.txt", ios::trunc);
+	saved << name << endl;
+    
+   for(int i=0; i<10; i++){
+      for(int j=0; j<10; j++){
+          saved << usergrid[i][j] << " ";
+      }
+      saved<<endl;
+   }
+	cout << endl;
+	for(int i=0; i<10; i++){
+      for(int j=0; j<10; j++){
+          saved << cpugrid[i][j] << " ";
+      }
+      saved<<endl;
+   }
+	saved.close();
+}
