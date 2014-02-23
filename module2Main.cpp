@@ -385,13 +385,34 @@ if(type==1){
 	cin >> x >> y;
 
 //if statement here for help guide
-
+	if(x=='?'){
+		PrintHelpGuide();
+	}
+	else if(toupper(x)=='S'){
+		saveGame(name, usergrid, cpugrid);
+	}
+	else if(toupper(x)=='Q'){
+		char response;
+		cout << "Would you like to save the game first (Y/N)? ";
+		cin >> response;
+		while(response != 'Y' && response != 'N'){
+			cout << "Please enter Y or N!" << endl;
+			cout << "Would you like to save the game first (Y/N)? ";
+			cin >> response;
+		}
+		if(response=='Y'){
+			saveGame(name, usergrid, cpugrid);
+		}
+		else{
+			quitGame();
+		}
+	}
 	while(verifyShot(name, usergrid, cpugrid, view, x, y)==false){
 	cout << "INVALID POSITION!" << endl << "Please choose a position to fire at (in the form A1): ";
 	cin >> x >> y;
 	}
 
-        cout << "\033[2J\033[1;1H";
+   cout << "\033[2J\033[1;1H";
 	cout<<"*******************************************************************"<<endl;
 	cout<<"                            BATTLESHIP                             "<<endl;
 	cout<<"*******************************************************************"<<endl;
@@ -425,29 +446,8 @@ return selected;
 
 bool player::verifyShot(string name, char usergrid[10][10], char cpugrid[10][10], char grid[10][10], char x, int y){
 x=toupper(x);
-if(x=='?'){
-PrintHelpGuide();
-}
-else if(x=='S'){
-saveGame(name, usergrid, cpugrid);
-}
-else if(x=='Q'){
-	char response;
-	cout << "Would you like to save the game first (Y/N)? ";
-	cin >> response;
-	while(response != 'Y' && response != 'N'){
-		cout << "Please enter Y or N!" << endl;
-		cout << "Would you like to save the game first (Y/N)? ";
-		cin >> response;
-	}
-	if(response=='Y'){
-		saveGame(name, usergrid, cpugrid);
-	}
-	else{
-		quitGame();
-	}
-}
-else if(!(x>=65 && x<=74)){
+
+if(!(x>=65 && x<=74)){
 return false;
 }
 else if(!(y>=1 && y<=10)){
@@ -482,4 +482,5 @@ void saveGame(string name, char usergrid[10][10], char cpugrid[10][10]){
       saved<<endl;
    }
 	saved.close();
+	int exit();
 }
