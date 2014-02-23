@@ -4,6 +4,8 @@ Battleship console game
 Module 2 - Gameplay Module
 */
 
+//SAVED RIGHT NOW!
+
 //PrintHighScores functionality:
 //throughout the game, keep a running total of the shots taken by each player and the number of hits for each player
 //in this way, we can calculate the hit percentage at the end of the game
