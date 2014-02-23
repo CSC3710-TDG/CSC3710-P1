@@ -59,19 +59,14 @@ do{
    
       if(choice==1){
          NewGame();
-      }/*else if(choice==2){
+      }else if(choice==2){
          LoadGame();
-      }*/else if(choice==3){
+      }else if(choice==3){
          PrintHighScores();
       }else if(choice==4){
          PrintHelpGuide();
       }else if(choice==5){
-         cout << "\033[2J\033[1;1H";
-         cout<<"*******************************************************************"<<endl;
-         cout<<"                            BATTLESHIP                             "<<endl;
-         cout<<"*******************************************************************"<<endl;
-         cout<< endl <<endl;
-         cout<<"Thanks for playing Battleship!"<<endl;
+         quitGame();
       }else{
          cout<<"You have invalid entry, Please try again."<<endl;
       }
@@ -119,17 +114,10 @@ void NewGame ()
       }
       printGrid(usergrid);  
       }
-
-
-
-
-
-
       RandomPlacement(cpugrid);
       playGame(name, usergrid, cpugrid);
-
-
 }
+
 bool verifyPlacement (int length, char x1, int y1, char x2, int y2, char usergrid[10][10])
 {
    if(x1!=x2 && y1!=y2){
@@ -191,3 +179,29 @@ void RandomPlacement(char cpugrid[10][10])
    }
 }
 
+void LoadGame()
+{
+   string name;
+   char usergrid[10][10];
+   char cpugrid[10][10];
+   
+   ifstream load;
+   load.open("saved.txt");
+   load>>name;   
+   for(int i=0; i<10; i++){
+      for(int j=0; j<10; j++){
+          load>>usergrid[i][j];
+      }
+   }
+   for(int i=0; i<10; i++){
+      for(int j=0; j<10; j++){
+          load>>cpugrid[i][j];
+      }
+   }
+   cout<<name<<endl;
+   printGrid(usergrid);
+   printGrid(cpugrid);
+
+   //playGame(name,usergrid,cpugrid);
+   
+}

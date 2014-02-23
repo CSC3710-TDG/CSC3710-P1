@@ -46,3 +46,13 @@ void printGrid(char grid[10][10])
    }
 }
 
+void quitGame()
+{
+    cout << "\033[2J\033[1;1H";
+         cout<<"*******************************************************************"<<endl;
+         cout<<"                            BATTLESHIP                             "<<endl;
+         cout<<"*******************************************************************"<<endl;
+         cout<< endl <<endl;
+         cout<<"Thanks for playing Battleship!"<<endl;
+         exit();
+}
