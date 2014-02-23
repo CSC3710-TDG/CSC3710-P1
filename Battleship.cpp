@@ -10,7 +10,11 @@
 #include<string>
 #include<stdlib.h>
 #include<stdio.h>
+#include"support.cpp"
+#include"reference.cpp"
 #include"BattleshipFunctions.cpp"
+#include"module2Main.cpp"
+
 //#include"module2Main.cpp"
 using namespace std;
 
