@@ -95,11 +95,15 @@ public:
 	bool verifyShot(string, char [10][10], char [10][10], char [10][10], char, int);
 	void addScore(int);
 	int checkScore();
+	void setScore(int);
 	void incrementShots();
 	void setShots(int);
+	int checkShots();
 	void incrementHits();
 	void setHits(int);
+	int checkHits();
 	void calcPercent();
+	double checkPercent();
 	void genScore();
 	void setName(string);
 };
@@ -111,6 +115,8 @@ int playGame(string name, char usergrid[10][10], char cpugrid[10][10]){
 
 	//declare base objects
 	player user, cpu;
+	user.setScore(0);
+	cpu.setScore(0);
 	user.setType(1);
 	cpu.setType(0);
 	user.setName(name);
@@ -226,17 +232,17 @@ int playGame(string name, char usergrid[10][10], char cpugrid[10][10]){
 
 	//set initial player scores
 	user.addScore(10*((5-cnumC)+(4-cnumB)+(3-cnumD)+(3-cnumS)+(2-cnumP)));
-	cnumC==0?user.addScore(50);
-	cnumB==0?user.addScore(40);
-	cnumD==0?user.addScore(30);
-	cnumS==0?user.addScore(30);
-	cnumP==0?user.addScore(20);
+	cnumC==0?user.addScore(50):user.addScore(0);
+	cnumB==0?user.addScore(40):user.addScore(0);
+	cnumD==0?user.addScore(30):user.addScore(0);
+	cnumS==0?user.addScore(30):user.addScore(0);
+	cnumP==0?user.addScore(20):user.addScore(0);
 	cpu.addScore(10*((5-unumC)+(4-unumB)+(3-unumD)+(3-unumS)+(2-unumP)));
-	unumC==0?cpu.addScore(50);
-	unumB==0?cpu.addScore(40);
-	unumD==0?cpu.addScore(30);
-	unumS==0?cpu.addScore(30);
-	unumP==0?cpu.addScore(20);
+	unumC==0?cpu.addScore(50):cpu.addScore(0);
+	unumB==0?cpu.addScore(40):cpu.addScore(0);
+	unumD==0?cpu.addScore(30):cpu.addScore(0);
+	unumS==0?cpu.addScore(30):cpu.addScore(0);
+	unumP==0?cpu.addScore(20):cpu.addScore(0);
 
 	//END LOAD-GAME FUNCTIONALITY
 
@@ -319,12 +325,17 @@ int playGame(string name, char usergrid[10][10], char cpugrid[10][10]){
 	//check if the player won on their last turn
 	if(cpu.checkHealth()==0){
 	cout << "Congratulations! You have won the game!" << endl;
-
-	//if the player won on their last turn, initiate end-game procedure, including generating their final score
+	cout << "\tYour stats were: " << endl;
+	cout << "\t\t" << user.checkShots() << " total shots" << endl;
+	cout << "\t\t" << user.checkHits() << " hits" << endl;
+	cout << "\t\t" << user.checkShots()-user.checkHits() << " misses" << endl;
 	user.genScore();
+	cout << "\tResulting in a hit percentage of " << setprecision(2) << user.checkPercent() << "%" << endl;
+	cout << "\tYou achieved a score of " << user.checkScore() << "!" << endl;
+	//if the player won on their last turn, initiate end-game procedure, including generating their final score
 	ofstream highscores;
 	highscores.open("highscores.txt", ios::app);
-	highscores << user.checkScore() << " " << name << endl;
+	highscores << user.checkScore() << " " << name;
 	highscores.close();
 
 	cout << "Press any key to continue!" << endl;
@@ -442,6 +453,11 @@ void ship::hit(){
 	health--;
 }
 
+//sets the player object's name
+void player::setName(string input){
+	name=input;
+}
+
 //sets the player object's type (0 for CPU, 1 for human)
 void player::setType(int input){
 	type=input;
@@ -477,6 +493,11 @@ int player::checkScore(){
 	return score;
 }
 
+//sets the player object's score to the desired amount
+void player::setScore(int input){
+	score=input;
+}
+
 //increments the number of shots the player object has taken as when they take 1 turn
 void player::incrementShots(){
 	shots++;
@@ -485,6 +506,11 @@ void player::incrementShots(){
 //sets the number of shots the player object has taken (used when loading an existing game)
 void player::setShots(int input){
 	shots=input;
+}
+
+//returns the player object's number of shots
+int player::checkShots(){
+	return shots;
 }
 
 //increments the number of hits the player object has achieved
@@ -498,14 +524,24 @@ void player::setHits(int input){
 	hits=input;
 }
 
+//returns the player object's number of hits
+int player::checkHits(){
+	return hits;
+}
+
 //calculates the player object's hit percentage as a function of hits divided by total shots
 void player::calcPercent(){
-	hitPercent=hits/shots;
+	hitPercent=(double)hits/shots;
+}
+
+//returns the player object's hit percentage
+double player::checkPercent(){
+	return hitPercent;
 }
 
 //generates the player object's final game score, taking into account the hit percentage
 void player::genScore(){
-	score=score*(1+hitPercent);
+	score=(double)score*(1+hitPercent);
 }
 
 /*player::takeTurn

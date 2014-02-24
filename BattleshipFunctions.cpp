@@ -249,9 +249,9 @@ void NewGame ()
 }
 
 bool verifyPlacement (int length, char x1, int y1, char x2, int y2, char usergrid[10][10])
-{  if(!(x>=65&&x<=74)){
+{  if(!(x1>=65&&x1<=74) && !(x2>=65&&x2<=74)){
        return false;
-   }else if(!(y>=1&&y<=10)){
+   }else if(!(y1>=1&&y1<=10) && !(y2>=1&&y2<=10)){
       return false;
    }else if(x1!=x2 && y1!=y2){
       return false;

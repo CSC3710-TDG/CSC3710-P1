@@ -68,13 +68,13 @@ inputFile >> arrayScores[x] >> arrayNames[x];
 
 		if (y>0 && arrayScores[y] == arrayScores[y-1])
 		{
-			cout << z << ") " << arrayScores[y] << " - " << arrayNames[y] << endl;
+			cout << setw(2) << z << ") " << arrayScores[y] << " - " << arrayNames[y] << endl;
 			z++;
 		}
 		else
 		{
 			z++;
-			cout << z << ") " << arrayScores[y] << " - " << arrayNames[y] << endl;
+			cout << setw(2) << z << ") " << arrayScores[y] << " - " << arrayNames[y] << endl;
 		}
 	}
 
@@ -122,12 +122,12 @@ void PrintHelpGuide ()
         cout<< endl <<endl;
 	cout << "HELP GUIDE" << endl;
 
-	cout << "\tA) \"BATTLESHIP\" SHIP NAMES\tLENGTHS\tCHARACTERS" <<endl;
+	cout << "\tA) \"BATTLESHIP\" SHIPS" << endl << "\t\tSHIP NAMES\t\tLENGTHS\t\tCHARACTERS" <<endl;
 	cout << "\t\t1) Aircraft Carrier\t5 units long\t'C'"<<endl;
-	cout << "\t\t2) Battleship\t4 units long\t'B'"<<endl;
-	cout << "\t\t3) Destroyer\t3 units long\t'D'"<<endl;
-	cout << "\t\t4) Submarine\t3 units long\t'S'"<<endl;
-	cout << "\t\t5) Patrol Boat\t2 untis long\t'P'"<<endl;
+	cout << "\t\t2) Battleship\t\t4 units long\t'B'"<<endl;
+	cout << "\t\t3) Destroyer\t\t3 units long\t'D'"<<endl;
+	cout << "\t\t4) Submarine\t\t3 units long\t'S'"<<endl;
+	cout << "\t\t5) Patrol Boat\t\t2 untis long\t'P'"<<endl;
 	cout << endl;
 
 	cout << "\tB) \"BATTLESHIP\" GAME PLAY"<<endl;
@@ -140,7 +140,7 @@ void PrintHelpGuide ()
 	cout << "\t\t\tc) Game play will begin. User will be prompted to enter one coordinate to fire on the opponent's grid."<<endl;
 	cout << "\t\t\t\ti) The opponent's grid will be updated with 'X' for a hit and 'M' for a miss."<<endl;
 	cout << "\t\t\t\tii) The opponent will select a grid location after the user has selected a location."<<endl;
-	cout << "\t\t\t\tiii) At any time during the game the user may enter '?' to view the Help Guide, 'S' to save and exit the game, or 'Q' to quit the current game without saving."<<endl;
+	cout << "\t\t\t\tiii) At any time during the game the user may enter '?1' to view the Help Guide, 'S1' to save and exit the game, or 'Q1' to quit the current game without saving."<<endl;
 	cout << "\t\t\t\tiv) Game play will continue until either the user or opponent wins or until the user chooses to save and quit or quit without saving."<<endl;
 	cout << "\t\t\t\tv) *The user may only save one game at a time. If a game has already been saved, the user may save their current game and the old saved game will be overwritten."<<endl;
 	cout << "\t\t2) Load a Saved Game"<<endl;
