@@ -158,15 +158,15 @@ int playGame(string name, char [10][10], char [10][10]);
  */
 //Struct Declaration:
 struct Placement{
-  int lengtharray [5] = {5,4,3,3,2};
-  char shiparray [5] ={'C', 'B', 'D', 'S', 'P'};
-  string shipnamearray [5] = {"Aircraft Carrier", "Battleship", "Destroyer", "Submarine", "Patrol Boat"}; 
-  int directionnumberarray [5] = {6,7,8,8,9};
+  int lengtharray [5];
+  char shiparray [5];
+  string shipnamearray [5]; 
+  int directionnumberarray [5];
 };
 
 //Welcome function when you first enter the game.
 void Welcome()
-{
+{  char ch;
    int choice; //=0;
 do{
    cout << "\033[2J\033[1;1H";
@@ -184,9 +184,15 @@ do{
    cout<<endl;
    cout<<"Enter the number: ";
    
-//   do {
-      cin>>choice;
-   
+      
+      cin>>ch;
+      while(ch<'1'||ch>'5'){
+         cout<<"You have entered an invalid key, please try again."<<endl;
+         cout<<"Enter the number:";
+         cin>>ch;
+      }
+      choice=ch-48;
+
       if(choice==1){
          NewGame();
       }else if(choice==2){
@@ -216,12 +222,19 @@ void NewGame ()
    int y1,y2;
    createGrid(usergrid);
    createGrid(cpugrid);
-   cout<<"Please enter your first name: ";
-   cin>>name;
+   cout<<"Please enter your first name (no spaces): ";
+   //cin>>name;
+   //gets (name);
+   cin.get();
+   getline (cin, name); 
+
    printGrid(usergrid);
    cout<<name<<", now please select the coordinates for your ships: "<<endl;
  
-   Placement item;
+   Placement item={{5,4,3,3,2},
+                   {'C', 'B', 'D', 'S', 'P'},
+                   {"Aircraft Carrier", "Battleship", "Destroyer", "Submarine", "Patrol Boat"},
+                   {6,7,8,8,9}};
    for(int z=0;z<5;z++){
    do{
       cout<<"Enter the start and ending coordinates for your ";
@@ -244,8 +257,11 @@ void NewGame ()
       }
       printGrid(usergrid);  
       }
+cout<<"test1"<< endl;
       RandomPlacement(cpugrid);
+cout<<"tets2"<<endl;
       playGame(name, usergrid, cpugrid);
+cout<<"test3"<<endl;
 }
 
 bool verifyPlacement (int length, char x1, int y1, char x2, int y2, char usergrid[10][10])
@@ -285,7 +301,10 @@ void RandomPlacement(char cpugrid[10][10])
    char x1, x2;
    int y1,y2;
    int direction;
-   Placement item;
+   Placement item={{5,4,3,3,2},
+                   {'C', 'B', 'D', 'S', 'P'},
+                   {"Aircraft Carrier", "Battleship", "Destroyer", "Submarine", "Patrol Boat"},
+                   {6,7,8,8,9}};
    //direction = rand() % 2 + 5;//choose a direction either vertical or horizontal
   for(int z=0;z<5;z++){
   do{
@@ -317,22 +336,33 @@ void LoadGame()
    string name;
    char usergrid[10][10];
    char cpugrid[10][10];
-   
-   ifstream load;
-   load.open("saved.txt");
-   load>>name;   
+  
+   ifstream file;
+   file.open("saved.txt");
+   file>>name;
+   if(file.eof()){
+     cout<<"There is no saved game. Please start a new game."<<endl;
+     //press any key to return to game play
+     string discardstr;
+     cout << endl << "Press any key to return to the main menu: " ;
+     cin>>discardstr;
+     //cin.get(discardstr);
+     cin.ignore();
+     //cin >> discardstr;
+   }else{    
+   file>>name;   
    for(int i=0; i<10; i++){
       for(int j=0; j<10; j++){
-          load>>usergrid[i][j];
+          file>>usergrid[i][j];
       }
    }
    for(int i=0; i<10; i++){
       for(int j=0; j<10; j++){
-          load>>cpugrid[i][j];
+          file>>cpugrid[i][j];
       }
    }
 
 
    playGame(name,usergrid,cpugrid);
-   
+   }
 }

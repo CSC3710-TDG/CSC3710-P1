@@ -80,10 +80,13 @@ inputFile >> arrayScores[x] >> arrayNames[x];
 
 	inputFile.close();
 
-	//press "R" to return to game play
-	string discardstr;
-	cout << endl << "Press any key to return to the main menu: " ;
-	cin >> discardstr;
+     //press any key to return to game play
+     string discardstr;
+     cout << endl << "Press any key to return to the main menu: " ;
+     cin>>discardstr;
+     //cin.get(discardstr);
+     cin.ignore();
+     //cin >> discardstr;
 }
 
 /*
@@ -167,10 +170,14 @@ void PrintHelpGuide ()
 	cout << "\t\t2) \"BATTLESHIP\" is a game of the HASBRO company, all rights reserved. Electronic terminal-based version of \"BATTLESHIP\" was created by the Triad Development Group, Inc. for the HASBRO company, in cooperation with the Senior Manager, Dr. Scott Russell, of High Point University's Department of Mathematics and Computer Science, CSC 3710: Software Engineering & Design."<<endl;
 
 
-	//press "R" to return to game play
-        string discardstr;
-        cout << endl << "Press any key to return to the main menu: " ;
-        cin >> discardstr;
+     //press any key to return to game play
+     string discardstr;
+     cout << endl << "Press any key to return to the main menu: " ;
+     cin>>discardstr;
+     //cin.get(discardstr);
+     cin.ignore();
+     //cin >> discardstr;
+     
 }
 
 
