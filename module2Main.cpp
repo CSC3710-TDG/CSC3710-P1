@@ -562,48 +562,55 @@ char player::takeTurn(string name, char usergrid[10][10], char cpugrid[10][10], 
 
 	if(type==1){
 		cout << "Please choose a position to fire at (in the form A1): ";
-		cin >> x >> y;
+		//cin >> x >> y;
+		cin >> x;
 
-	//if statement here for help guide
-	if(x=='?'){
+		while(x=='?'||x=='S'||x=='Q'){
+		//if statement here for help guide
+		if(x=='?'){
 
-	PrintHelpGuide();
-	cout << "\033[2J\033[1;1H";
-	cout<<"*******************************************************************"<<endl;
-	cout<<"                            BATTLESHIP                             "<<endl;
-	cout<<"*******************************************************************"<<endl;
-  	cout<< endl <<endl;
-	printGrid(view);
-	cout << "-------------------------------------------------------------------" << endl;
-	printGrid(usergrid);
-	cout << "Please choose a position to fire at (in the form A1): ";
-	cin >> x >> y;
-	}
-	else if(toupper(x)=='S'){
-		saveGame(name, usergrid, cpugrid);
-	}
-	else if(toupper(x)=='Q'){
-		char response;
-		cout << "Would you like to save the game first (Y/N)? ";
-		cin >> response;
-		while(response != 'Y' && response != 'N'){
-			cout << "Please enter Y or N!" << endl;
-			cout << "Would you like to save the game first (Y/N)? ";
-			cin >> response;
+		PrintHelpGuide();
+		cout << "\033[2J\033[1;1H";
+		cout<<"*******************************************************************"<<endl;
+		cout<<"                            BATTLESHIP                             "<<endl;
+		cout<<"*******************************************************************"<<endl;
+	  	cout<< endl <<endl;
+		printGrid(view);
+		cout << "-------------------------------------------------------------------" << endl;
+		printGrid(usergrid);
+		cout << "Please choose a position to fire at (in the form A1): ";
+		//cin >> x >> y;
 		}
-		if(response=='Y'){
+		else if(toupper(x)=='S'){
 			saveGame(name, usergrid, cpugrid);
 		}
-		else{
-			quitGame();
+		else if(toupper(x)=='Q'){
+			char response;
+			cout << "Would you like to save the game first (Y/N)? ";
+			cin >> response;
+			while(toupper(response) != 'Y' && toupper(response) != 'N'){
+				cout << "Please enter Y or N!" << endl;
+				cout << "Would you like to save the game first (Y/N)? ";
+				cin >> response;
+			}
+			if(toupper(response)=='Y'){
+				saveGame(name, usergrid, cpugrid);
+			}
+			else{
+				quitGame();
+			}
 		}
-	}
-	x=toupper(x);
-	while(verifyShot(name, usergrid, cpugrid, view, x, y)==false){
-	cout << "INVALID POSITION!" << endl << "Please choose a position to fire at (in the form A1): ";
-	cin >> x >> y;
-	x=toupper(x);
-	}
+			cin >> x;
+		}
+		
+		cin >> y;
+
+		x=toupper(x);
+		while(verifyShot(name, usergrid, cpugrid, view, x, y)==false){
+		cout << "INVALID POSITION!" << endl << "Please choose a position to fire at (in the form A1): ";
+		cin >> x >> y;
+		x=toupper(x);
+		}
 
    cout << "\033[2J\033[1;1H";
 	cout<<"*******************************************************************"<<endl;
