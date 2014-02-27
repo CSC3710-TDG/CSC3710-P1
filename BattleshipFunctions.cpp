@@ -349,8 +349,7 @@ void LoadGame()
      //cin.get(discardstr);
      cin.ignore();
      //cin >> discardstr;
-   }else{    
-   file>>name;   
+   }else{       
    for(int i=0; i<10; i++){
       for(int j=0; j<10; j++){
           file>>usergrid[i][j];
@@ -361,7 +360,6 @@ void LoadGame()
           file>>cpugrid[i][j];
       }
    }
-
 
    playGame(name,usergrid,cpugrid);
    }
